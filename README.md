@@ -6,6 +6,7 @@ A modular FastMCP server implementation with Auth0 OAuth 2.0 authentication
 
 - 🔐 **OAuth 2.0 Authentication** with Auth0
 - 🛠️ **FastMCP Integration** for AI tool serving
+- ⚡ **uv Package Management** for fast dependency resolution
 - 🔍 **Debugging Support** with health checks
 - 📊 **Structured Logging** throughout the application
 
@@ -17,7 +18,7 @@ mcp-oauth/
 ├── oauth.py            # Auth0 OAuth provider implementation
 ├── config.py           # Configuration management
 ├── exceptions.py       # Custom exception classes
-├── requirements.txt    # Python dependencies
+├── pyproject.toml      # Project configuration and dependencies
 ├── .env               # Environment variables (create from template below)
 └── README.md          # This file
 ```
@@ -27,7 +28,15 @@ mcp-oauth/
 ### 1. Install Dependencies
 
 ```bash
-pip install -r requirements.txt
+# Create virtual environment
+uv venv
+
+# Activate virtual environment
+source .venv/bin/activate  # On macOS/Linux
+# .venv\Scripts\activate   # On Windows
+
+# Install dependencies
+uv sync
 ```
 
 ### 2. Configure Auth0
@@ -82,7 +91,7 @@ ENABLE_CLIENT_REGISTRATION=true
 ### 4. Run the Server
 
 ```bash
-python app.py
+uv run python app.py
 ```
 
 The server will start on `http://localhost:8000`
@@ -183,24 +192,25 @@ The project follows Python best practices:
 ### Testing
 
 ```bash
-# Install test dependencies
-pip install pytest pytest-asyncio
+# Install development dependencies
+uv sync --extra dev
 
 # Run tests (when implemented)
-pytest tests/
+uv run pytest tests/
 ```
 
 ### Code Formatting
 
 ```bash
 # Format code
-black .
+uv run black .
 
 # Sort imports
-isort .
+uv run isort .
 
-# Type checking
-mypy .
+# Lint with ruff
+uv run ruff check .
+uv run ruff format .
 ```
 
 ## Production Considerations
@@ -258,7 +268,7 @@ app.add_middleware(
 Enable debug mode for detailed logging:
 
 ```bash
-MCP_DEBUG=true python app.py
+MCP_DEBUG=true uv run python app.py
 ```
 
 ## License

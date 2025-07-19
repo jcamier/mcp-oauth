@@ -1,93 +1,171 @@
-# Byte-compiled files
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Virtual environment
+# uv
+uv.lock
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask
+instance/
+.webassets-cache
+
+# Scrapy
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# pdm
+.pdm.toml
+.pdm-python
+.pdm-build/
+
+# PEP 582
+__pypackages__/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
 env/
 venv/
-.venv/
+ENV/
+env.bak/
+venv.bak/
 
-# Ruff cache directory
-.ruff_cache/
+# Spyder project settings
+.spyderproject
+.spyproject
 
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
+# Rope project settings
+.ropeproject
 
-# Log files
-*.log
+# mkdocs documentation
+/site
 
-# OS-specific files
-.DS_Store
-Thumbs.db
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
 
-# Environment variables
-.env
-*.env
+# Pyre type checker
+.pyre/
 
-# Compiled code
-*.so
-*.out
-*.o
+# pytype static type analyzer
+.pytype/
 
-# Database files
-*.sqlite3
-*.db
+# Cython debug symbols
+cython_debug/
 
-# Packaging files
-*.egg
-*.egg-info/
-dist/
-build/
-*.wheel
-
-# IDE files
+# IDE
 .vscode/
 .idea/
-
-# Test coverage
-.coverage
-*.cover
-*.cov
-htmlcov/
-
-# Logs and reports
-*.log
-*.pid
-*.gz
-
-# Backup files
-*.bak
 *.swp
 *.swo
 *~
 
-# Temporary files
-*.tmp
-*.temp
-*.~*
-/tmp/
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# Cloud-specific files
-*.aws/
-*.azure/
-.terraform/
-*.tfstate
-*.tfstate.*
-
-# Python cache
-*.cache/
-
-# Node.js (if applicable)
-node_modules/
-
-# Miscellaneous
-*.crt
-*.pem
-*.key
-
-# Git-specific files
-*.orig
+# Logs
+logs/
+*.log
 
 
 
