@@ -1,12 +1,12 @@
 [project]
 name = "mcp-oauth"
 version = "0.1.0"
-description = "A modular FastMCP server implementation with Auth0 OAuth 2.0 authentication"
+description = "A modular FastMCP server and client implementation with Auth0 OAuth 2.0 authentication"
 readme = "README.md"
 requires-python = ">=3.10"
 
 dependencies = [
-    # FastMCP and OAuth dependencies
+    # FastMCP and OAuth dependencies (server)
     "fastmcp>=2.0.0",
     "uvicorn>=0.24.0",
     "fastapi>=0.104.0",
@@ -20,7 +20,7 @@ dependencies = [
     "python-dotenv>=1.0.0",
     "pydantic>=2.4.0",
 
-    # HTTP client
+    # HTTP client (shared by client and server)
     "httpx>=0.25.0",
 
     # Web framework utilities
@@ -35,6 +35,20 @@ dev = [
     "isort>=5.12.0",
     "ruff>=0.1.0",
 ]
+server = [
+    # Server-specific dependencies
+    "uvicorn[standard]>=0.24.0",
+]
+client = [
+    # Client-specific dependencies
+    "mcp>=1.0.0",  # Official MCP client library
+]
+
+[project.scripts]
+# Multiple entry points
+mcp-server = "server.app:main"
+mcp-client = "client.cli:cli_main"
+mcp-demo = "demos.basic_demo:main"
 
 [tool.uv]
 dev-dependencies = [

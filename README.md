@@ -6,7 +6,6 @@ A modular FastMCP server implementation with Auth0 OAuth 2.0 authentication
 
 - 🔐 **OAuth 2.0 Authentication** with Auth0
 - 🛠️ **FastMCP Integration** for AI tool serving
-- ⚡ **uv Package Management** for fast dependency resolution
 - 🔍 **Debugging Support** with health checks
 - 📊 **Structured Logging** throughout the application
 
@@ -14,13 +13,21 @@ A modular FastMCP server implementation with Auth0 OAuth 2.0 authentication
 
 ```
 mcp-oauth/
-├── app.py              # Main FastMCP server application
-├── oauth.py            # Auth0 OAuth provider implementation
-├── config.py           # Configuration management
-├── exceptions.py       # Custom exception classes
-├── pyproject.toml      # Project configuration and dependencies
-├── .env               # Environment variables (create from template below)
-└── README.md          # This file
+├── server/              # FastMCP server (OAuth-secured)
+│   ├── app.py          # Main server application
+│   ├── oauth.py        # Auth0 OAuth provider
+│   ├── config.py       # Configuration management
+│   └── exceptions.py   # Custom exceptions
+├── client/              # MCP client (OAuth-enabled)
+│   ├── client.py       # Main client implementation
+│   ├── auth_handler.py # OAuth authentication handler
+│   └── cli.py         # Command-line interface
+├── demos/               # Usage demonstrations
+│   ├── basic_demo.py   # Complete OAuth flow demo
+│   └── weather_demo.py # Weather tool demo
+├── pyproject.toml       # Project configuration and dependencies
+├── .env                # Environment variables (create from template below)
+└── README.md           # This file
 ```
 
 ## Quick Start
@@ -44,8 +51,8 @@ uv sync
 1. **Create Auth0 Application:**
    - Go to [Auth0 Dashboard](https://manage.auth0.com/) → Applications
    - Click "Create Application"
-   - Choose "Regular Web Application"
-   - Note down: Domain, Client ID, Client Secret
+   - Create a Name and choose "Regular Web Application"
+   - Note down: Domain, Client ID, Client Secret from your Settings tab
 
 2. **Configure Callback URLs:**
    ```
@@ -64,7 +71,7 @@ uv sync
 
 ### 3. Environment Variables
 
-Create a `.env` file in the project root:
+Create a `.env` file in the project root using `.env.example` as a template:
 
 ```bash
 # Auth0 Configuration (Required)
@@ -91,10 +98,31 @@ ENABLE_CLIENT_REGISTRATION=true
 ### 4. Run the Server
 
 ```bash
-uv run python app.py
+uv run python server/app.py
+# Or use the script entry point:
+uv run mcp-server
 ```
 
 The server will start on `http://localhost:8000`
+
+### 5. Test with the Client
+
+**Interactive CLI:**
+```bash
+uv run python client/cli.py
+# Or use the script entry point:
+uv run mcp-client
+```
+
+**Run Demos:**
+```bash
+# Basic OAuth flow demo
+uv run python demos/basic_demo.py
+# Or: uv run mcp-demo
+
+# Weather tool demo
+uv run python demos/weather_demo.py
+```
 
 ## Architecture Overview
 
@@ -268,7 +296,7 @@ app.add_middleware(
 Enable debug mode for detailed logging:
 
 ```bash
-MCP_DEBUG=true uv run python app.py
+MCP_DEBUG=true uv run python server/app.py
 ```
 
 ## License

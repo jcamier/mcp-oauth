@@ -18,9 +18,9 @@ from starlette.responses import JSONResponse
 from fastmcp import FastMCP
 from fastmcp.server.auth.auth import ClientRegistrationOptions
 
-from config import load_config, AppConfig
-from oauth import Auth0OAuthProvider
-from exceptions import MCPOAuthError
+from .config import load_config, AppConfig
+from .oauth import Auth0OAuthProvider
+from .exceptions import MCPOAuthError
 
 # Configure logging
 logging.basicConfig(
