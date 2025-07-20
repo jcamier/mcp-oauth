@@ -52,6 +52,7 @@ uv sync
    - Go to [Auth0 Dashboard](https://manage.auth0.com/) → Applications
    - Click "Create Application"
    - Create a Name and choose "Regular Web Application"
+   - Add `http://localhost:8080/callback` to the Allowed Callback URL's on Settings tab
    - Note down: Domain, Client ID, Client Secret from your Settings tab
 
 2. **Configure Callback URLs:**
@@ -98,27 +99,26 @@ ENABLE_CLIENT_REGISTRATION=true
 ### 4. Run the Server
 
 ```bash
-uv run python server/app.py
-# Or use the script entry point:
-uv run mcp-server
+uv run python -m server
 ```
 
 The server will start on `http://localhost:8000`
+
+    curl http://localhost:8000/health
 
 ### 5. Test with the Client
 
 **Interactive CLI:**
 ```bash
-uv run python client/cli.py
-# Or use the script entry point:
-uv run mcp-client
+uv run python -m client
+# Or: uv run python client/cli.py
 ```
 
 **Run Demos:**
 ```bash
 # Basic OAuth flow demo
-uv run python demos/basic_demo.py
-# Or: uv run mcp-demo
+uv run python -m demos
+# Or: uv run python demos/basic_demo.py
 
 # Weather tool demo
 uv run python demos/weather_demo.py
@@ -296,24 +296,15 @@ app.add_middleware(
 Enable debug mode for detailed logging:
 
 ```bash
-MCP_DEBUG=true uv run python server/app.py
+MCP_DEBUG=true uv run python -m server
 ```
 
 ## License
 
 MIT License - see LICENSE file for details.
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Follow the existing code style
-4. Add tests for new functionality
-5. Submit a pull request
-
 ## Support
 
 For issues and questions:
 - Check the [FastMCP documentation](https://github.com/jlowin/fastmcp)
 - Review [Auth0 documentation](https://auth0.com/docs)
-- Open an issue in this repository

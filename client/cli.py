@@ -9,7 +9,7 @@ import logging
 import sys
 from typing import Optional
 
-from .client import MCPOAuthClient
+from client.client import MCPOAuthClient
 
 # Configure logging
 logging.basicConfig(

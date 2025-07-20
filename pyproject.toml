@@ -45,7 +45,7 @@ client = [
 ]
 
 [project.scripts]
-# Multiple entry points
+# Entry points for installed package
 mcp-server = "server.app:main"
 mcp-client = "client.cli:cli_main"
 mcp-demo = "demos.basic_demo:main"

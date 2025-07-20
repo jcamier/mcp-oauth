@@ -13,7 +13,7 @@ import httpx
 from mcp import ClientSession
 from mcp.client.session import ClientSession as MCPClientSession
 
-from .auth_handler import OAuthHandler
+from client.auth_handler import OAuthHandler
 
 logger = logging.getLogger(__name__)
 

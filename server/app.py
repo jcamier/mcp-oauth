@@ -18,9 +18,9 @@ from starlette.responses import JSONResponse
 from fastmcp import FastMCP
 from fastmcp.server.auth.auth import ClientRegistrationOptions
 
-from .config import load_config, AppConfig
-from .oauth import Auth0OAuthProvider
-from .exceptions import MCPOAuthError
+from server.config import load_config, AppConfig
+from server.oauth import Auth0OAuthProvider
+from server.exceptions import MCPOAuthError
 
 # Configure logging
 logging.basicConfig(
@@ -219,11 +219,12 @@ def create_app() -> FastAPI:
     @app.get("/.well-known/oauth-authorization-server")
     async def oauth_metadata():
         """OAuth authorization server metadata endpoint."""
+        auth0_base = f"https://{config.auth0.domain}"
         return {
-            "issuer": config.mcp.issuer_url,
-            "authorization_endpoint": f"{config.mcp.issuer_url}/authorize",
-            "token_endpoint": f"{config.mcp.issuer_url}/token",
-            "registration_endpoint": f"{config.mcp.issuer_url}/register" if config.enable_client_registration else None,
+            "issuer": auth0_base,
+            "authorization_endpoint": f"{auth0_base}/authorize",
+            "token_endpoint": f"{auth0_base}/oauth/token",
+            "registration_endpoint": f"{auth0_base}/oidc/register" if config.enable_client_registration else None,
             "scopes_supported": config.default_scopes + config.required_scopes,
             "response_types_supported": ["code"],
             "grant_types_supported": ["authorization_code"],
@@ -249,7 +250,7 @@ def main():
         logger.info(f"Starting server on {config.mcp.host}:{config.mcp.port}")
 
         uvicorn.run(
-            "app:app",
+            "server.app:app",
             host=config.mcp.host,
             port=config.mcp.port,
             reload=config.mcp.debug,

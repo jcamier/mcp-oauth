@@ -26,11 +26,12 @@ from starlette.exceptions import HTTPException
 from starlette.requests import Request
 from starlette.responses import RedirectResponse, JSONResponse
 
-from .config import Auth0Config
-from .exceptions import (
+from server.config import Auth0Config
+from server.exceptions import (
     Auth0Error,
     TokenValidationError,
     AuthorizationError,
+    ClientRegistrationError
 )
 
 logger = logging.getLogger(__name__)

@@ -6,6 +6,7 @@ Handles the OAuth 2.0 authentication flow for connecting to secured MCP servers.
 
 import asyncio
 import logging
+import os
 import webbrowser
 from typing import Optional, Dict, Any
 from urllib.parse import urlencode, parse_qs, urlparse
@@ -13,6 +14,10 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import threading
 
 import httpx
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 
@@ -84,9 +89,11 @@ class OAuthHandler:
             redirect_uri: Callback URI for OAuth flow
         """
         self.server_url = server_url.rstrip('/')
-        self.client_id = client_id
+
+        # Load from environment variables if not provided
+        self.client_id = client_id or os.getenv("AUTH0_CLIENT_ID")
+        self.client_secret = os.getenv("AUTH0_CLIENT_SECRET")
         self.redirect_uri = redirect_uri
-        self.client_secret: Optional[str] = None
 
         # Extract callback port from redirect URI
         parsed_uri = urlparse(redirect_uri)
@@ -181,7 +188,8 @@ class OAuthHandler:
                 "response_type": "code",
                 "redirect_uri": self.redirect_uri,
                 "scope": "openid profile email read:mcp write:mcp",
-                "state": "mcp-client-auth"  # Simple state for demo
+                "state": "mcp-client-auth",  # Simple state for demo
+                # "prompt": "login"  # Uncomment to force login every time
             }
 
             auth_url = f"{oauth_config['authorization_endpoint']}?{urlencode(auth_params)}"
@@ -263,11 +271,30 @@ class OAuthHandler:
             print("🔍 Discovering OAuth configuration...")
             oauth_config = await self.discover_oauth_config()
 
-            # 2. Register client if needed
+                        # 2. Register client if needed
             if not self.client_id:
-                print("📝 Registering OAuth client...")
-                self.client_id, self.client_secret = await self.register_client(oauth_config)
-                print(f"✅ Client registered: {self.client_id}")
+                if oauth_config.get("registration_endpoint"):
+                    print("📝 Registering OAuth client...")
+                    self.client_id, self.client_secret = await self.register_client(oauth_config)
+                    print(f"✅ Client registered: {self.client_id}")
+                else:
+                    print("⚠️  Server doesn't support dynamic registration")
+                    print("💡 Add AUTH0_CLIENT_ID and AUTH0_CLIENT_SECRET to your .env file to avoid prompts")
+                    self.client_id = input("Enter your Auth0 client ID: ").strip()
+                    if not self.client_id:
+                        raise ValueError("Client ID is required when registration is not supported")
+
+                    if not self.client_secret:
+                        self.client_secret = input("Enter your Auth0 client secret (optional): ").strip()
+
+            # Validate we have required credentials
+            if not self.client_id:
+                raise ValueError("Client ID is required for OAuth authentication")
+
+            if self.client_id and self.client_secret:
+                print(f"🔑 Using Auth0 client: {self.client_id[:8]}...")
+            else:
+                print(f"🔑 Using Auth0 public client: {self.client_id[:8]}...")
 
             # 3. Get authorization code
             auth_code = await self.get_authorization_code(oauth_config)
